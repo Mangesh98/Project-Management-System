@@ -13,19 +13,20 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class Chat {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    private String name;
 
-    private String fullName;
-    private String email;
-    private String password;
-
-    private int projectSize;
+    @OneToOne
+    private Project project;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "assignee", cascade = CascadeType.ALL)
-    private List<Issue> assignedIssues = new ArrayList<>();
+    @OneToMany(mappedBy = "chat", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Message> messages;
 
+    @ManyToMany
+    private List<User> users=new ArrayList<>();
 }
+

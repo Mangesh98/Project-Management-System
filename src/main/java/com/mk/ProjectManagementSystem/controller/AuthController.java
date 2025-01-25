@@ -1,7 +1,7 @@
 package com.mk.ProjectManagementSystem.controller;
 
 import com.mk.ProjectManagementSystem.Config.JwtProvider;
-import com.mk.ProjectManagementSystem.Repository.UserRepository;
+import com.mk.ProjectManagementSystem.repository.UserRepository;
 import com.mk.ProjectManagementSystem.Service.CustomUserDetailsImpl;
 import com.mk.ProjectManagementSystem.model.User;
 import com.mk.ProjectManagementSystem.request.LoginRequest;

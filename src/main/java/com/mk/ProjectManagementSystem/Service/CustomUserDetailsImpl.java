@@ -1,6 +1,6 @@
 package com.mk.ProjectManagementSystem.Service;
 
-import com.mk.ProjectManagementSystem.Repository.UserRepository;
+import com.mk.ProjectManagementSystem.repository.UserRepository;
 import com.mk.ProjectManagementSystem.model.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
