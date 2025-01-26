@@ -1,6 +1,8 @@
 package com.mk.ProjectManagementSystem.controller;
 
 import com.mk.ProjectManagementSystem.Config.JwtProvider;
+import com.mk.ProjectManagementSystem.Service.SubscriptionService;
+import com.mk.ProjectManagementSystem.model.Subscription;
 import com.mk.ProjectManagementSystem.repository.UserRepository;
 import com.mk.ProjectManagementSystem.Service.CustomUserDetailsImpl;
 import com.mk.ProjectManagementSystem.model.User;
@@ -24,11 +26,13 @@ public class AuthController {
     private final PasswordEncoder passwordEncoder;
 
     private final CustomUserDetailsImpl customUserDetails;
+    private final SubscriptionService subscriptionService;
 
-    public AuthController(UserRepository userRepository, PasswordEncoder passwordEncoder, CustomUserDetailsImpl customUserDetails) {
+    public AuthController(UserRepository userRepository, PasswordEncoder passwordEncoder, CustomUserDetailsImpl customUserDetails, SubscriptionService subscriptionService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.customUserDetails = customUserDetails;
+        this.subscriptionService = subscriptionService;
     }
 
     @PostMapping("/signup")
@@ -53,7 +57,14 @@ public class AuthController {
             newUser.setEmail(user.getEmail());
             newUser.setPassword(passwordEncoder.encode(user.getPassword()));
             newUser.setFullName(user.getFullName());
-            userRepository.save(newUser);
+            User savedUser=userRepository.save(newUser);
+
+//          Create User Subscription
+           Subscription subscription =subscriptionService.createSubscription(savedUser);
+            if (subscription == null) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                        .body(new AuthResponse(null, "Failed to create subscription"));
+            }
 
             // Automatically log in the user after signup
             Authentication auth = new UsernamePasswordAuthenticationToken(
