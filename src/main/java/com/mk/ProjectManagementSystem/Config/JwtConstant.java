@@ -1,6 +1,9 @@
 package com.mk.ProjectManagementSystem.Config;
 
+import org.springframework.beans.factory.annotation.Value;
+
 public class JwtConstant {
-    public static final String JWT_SECRET = "ThisIsTestSecret";
+    @Value("${JWT_SECRET}")
+    public static final String JWT_SECRET = "";
     public static final String JWT_HEADER="Authorization";
 }

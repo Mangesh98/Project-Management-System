@@ -31,26 +31,6 @@ public class AuthController {
         this.customUserDetails = customUserDetails;
     }
 
-    //    @PostMapping("/signup")
-//    public ResponseEntity<AuthResponse> createUserHandler(@RequestBody User user){
-//        User isUserExists = userRepository.findByEmail(user.getEmail());
-//        if (isUserExists != null) {
-//            return new ResponseEntity<>(new AuthResponse(null,"Email already exist with another account"),HttpStatus.CONFLICT);
-//        }
-//        User newUser = new User();
-//        newUser.setEmail(user.getEmail());
-//        newUser.setPassword(passwordEncoder.encode(user.getPassword()));
-//        newUser.setFullName(user.getFullName());
-//        userRepository.save(newUser);
-//
-//        Authentication auth = new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword());
-//        SecurityContextHolder.getContext().setAuthentication(auth);
-//        String jwt= JwtProvider.generateToken(auth);
-//
-//        AuthResponse authResponse = new AuthResponse(jwt,"Sign Up Success");
-//
-//        return new ResponseEntity<>(authResponse, HttpStatus.CREATED);
-//    }
     @PostMapping("/signup")
     public ResponseEntity<AuthResponse> createUserHandler(@RequestBody User user) {
         // Validate request fields

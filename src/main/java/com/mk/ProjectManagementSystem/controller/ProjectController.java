@@ -1,11 +1,14 @@
 package com.mk.ProjectManagementSystem.controller;
 
+import com.mk.ProjectManagementSystem.Service.InvitationService;
 import com.mk.ProjectManagementSystem.Service.ProjectService;
 import com.mk.ProjectManagementSystem.Service.UserService;
 import com.mk.ProjectManagementSystem.model.Chat;
 import com.mk.ProjectManagementSystem.model.Project;
 import com.mk.ProjectManagementSystem.model.User;
+import com.mk.ProjectManagementSystem.request.InviteRequest;
 import com.mk.ProjectManagementSystem.response.MessageResponse;
+import jakarta.mail.MessagingException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,10 +20,12 @@ import java.util.List;
 public class ProjectController {
     private final ProjectService projectService;
     private final UserService userService;
+    private final InvitationService invitationService;
 
-    public ProjectController(ProjectService projectService, UserService userService) {
+    public ProjectController(ProjectService projectService, UserService userService, InvitationService invitationService) {
         this.projectService = projectService;
         this.userService = userService;
+        this.invitationService = invitationService;
     }
 
     private User AuthUser(String jwt) {
@@ -100,10 +105,10 @@ public class ProjectController {
             @RequestHeader("Authorization") String jwt
     ) {
         User user = AuthUser(jwt);
-        if(user==null){
+        if (user == null) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
-        List<Project> projects=projectService.searchProjects(keyword,user);
+        List<Project> projects = projectService.searchProjects(keyword, user);
         return new ResponseEntity<>(projects, HttpStatus.OK);
     }
 
@@ -118,5 +123,21 @@ public class ProjectController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(chat, HttpStatus.OK);
+    }
+
+    @PostMapping
+    public ResponseEntity<MessageResponse> inviteProject(
+            @RequestBody InviteRequest request,
+           @RequestHeader("Authorization") String jwt) throws MessagingException {
+
+        if (AuthUser(jwt) == null) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+        Boolean invitationStatus = invitationService.sendInvitation(request.getEmail(), request.getProjectId());
+        if (!invitationStatus) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        MessageResponse messageResponse = new MessageResponse("Invitation sent successfully");
+        return new ResponseEntity<>(messageResponse, HttpStatus.OK);
     }
 }
