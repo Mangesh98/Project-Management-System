@@ -30,7 +30,7 @@ public class IssueServiceImpl implements IssueService {
 
     @Override
     public List<Issue> getIssueByProjectId(Long projectId) {
-        return issueRepository.finByProjectId(projectId);
+        return issueRepository.findByProjectID(projectId);
     }
 
     @Override

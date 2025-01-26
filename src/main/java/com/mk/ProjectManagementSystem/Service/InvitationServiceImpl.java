@@ -3,7 +3,6 @@ package com.mk.ProjectManagementSystem.Service;
 import com.mk.ProjectManagementSystem.model.Invitation;
 import com.mk.ProjectManagementSystem.model.Project;
 import com.mk.ProjectManagementSystem.repository.InvitationRepository;
-import jakarta.mail.MessagingException;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -22,19 +21,23 @@ public class InvitationServiceImpl implements InvitationService {
     }
 
     @Override
-    public Boolean sendInvitation(String email, Long projectId) throws MessagingException {
+    public Boolean sendInvitation(String email, Long projectId) {
         Project project = projectService.getProjectById(projectId);
         if (email == null || email.isEmpty() || project == null) {
             return false;
         }
-        String invitationToken = UUID.randomUUID().toString();
-        Invitation invitation = new Invitation();
-        invitation.setEmail(email);
-        invitation.setProjectId(projectId);
-        invitation.setToken(invitationToken);
-        invitationRepository.save(invitation);
-        String invitationLink ="${FRONTEND_URL}/accept_invitation?token=" + invitationToken;
-        return emailService.sendEmailWithToken(email, invitationLink);
+        try {
+            String invitationToken = UUID.randomUUID().toString();
+            Invitation invitation = new Invitation();
+            invitation.setEmail(email);
+            invitation.setProjectId(projectId);
+            invitation.setToken(invitationToken);
+            invitationRepository.save(invitation);
+            String invitationLink = "${FRONTEND_URL}/accept_invitation?token=" + invitationToken;
+            return emailService.sendEmailWithToken(email, invitationLink);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -54,7 +57,7 @@ public class InvitationServiceImpl implements InvitationService {
     @Override
     public Boolean deleteToken(String token) {
         Invitation invitation = invitationRepository.findByToken(token);
-        if(invitation != null) {
+        if (invitation != null) {
             invitationRepository.delete(invitation);
             return true;
         }

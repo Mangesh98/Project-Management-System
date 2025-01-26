@@ -8,7 +8,6 @@ import com.mk.ProjectManagementSystem.model.Project;
 import com.mk.ProjectManagementSystem.model.User;
 import com.mk.ProjectManagementSystem.request.InviteRequest;
 import com.mk.ProjectManagementSystem.response.MessageResponse;
-import jakarta.mail.MessagingException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -125,19 +124,22 @@ public class ProjectController {
         return new ResponseEntity<>(chat, HttpStatus.OK);
     }
 
-    @PostMapping
+    @PostMapping("/invite")
     public ResponseEntity<MessageResponse> inviteProject(
             @RequestBody InviteRequest request,
-           @RequestHeader("Authorization") String jwt) throws MessagingException {
+           @RequestHeader("Authorization") String jwt) {
 
         if (AuthUser(jwt) == null) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
+        try {
         Boolean invitationStatus = invitationService.sendInvitation(request.getEmail(), request.getProjectId());
         if (!invitationStatus) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        MessageResponse messageResponse = new MessageResponse("Invitation sent successfully");
-        return new ResponseEntity<>(messageResponse, HttpStatus.OK);
+        return new ResponseEntity<>(new MessageResponse("Invitation sent successfully"), HttpStatus.OK);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }

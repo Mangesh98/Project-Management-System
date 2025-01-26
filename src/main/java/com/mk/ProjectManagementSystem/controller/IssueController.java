@@ -65,7 +65,7 @@ public class IssueController {
         issueDTO.setDescription(issue.getDescription());
         issueDTO.setDueDate(newIssue.getDueDate());
         issueDTO.setId(newIssue.getId());
-        issueDTO.setProjectId(newIssue.getProjectId());
+        issueDTO.setProjectId(newIssue.getProjectID());
         issueDTO.setPriority(newIssue.getPriority());
         issueDTO.setStatus(newIssue.getStatus());
         issueDTO.setTitle(newIssue.getTitle());
