@@ -38,6 +38,7 @@ public class AuthController {
     @PostMapping("/signup")
     public ResponseEntity<AuthResponse> createUserHandler(@RequestBody User user) {
         // Validate request fields
+
         if (user == null || user.getEmail() == null || user.getEmail().isEmpty() ||
                 user.getPassword() == null || user.getPassword().isEmpty() ||
                 user.getFullName() == null || user.getFullName().isEmpty()) {
