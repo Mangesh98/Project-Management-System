@@ -1,12 +1,10 @@
 import './App.css'
-import { Button } from './components/ui/button'
-
+import Home from './pages/Home/home'
 function App() {
 
   return (
     <>
-     <Button variant="outline">Button</Button>
-
+     <Home/>
     </>
   )
 }
