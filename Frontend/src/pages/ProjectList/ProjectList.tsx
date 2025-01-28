@@ -8,7 +8,7 @@ import { MagnifyingGlassIcon, MixerHorizontalIcon } from "@radix-ui/react-icons"
 import { ChangeEvent, useState } from "react"
 import ProjectCard from "../Project/ProjectCard"
 
-const tags = [
+export const tags = [
     { name: "All", value: "all" },
     { name: "React", value: "react" },
     { name: "NextJs", value: "nextjs" },
@@ -21,7 +21,7 @@ const tags = [
     { name: "Django", value: "django" },
 ]
 
-const categories = [
+export const categories = [
     { name: "All", value: "all" },
     { name: "FullStack", value: "fullstack" },
     { name: "Frontend", value: "frontend" },
