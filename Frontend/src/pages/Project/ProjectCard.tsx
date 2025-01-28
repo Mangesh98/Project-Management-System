@@ -1,7 +1,7 @@
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card'
-import { DropdownMenu} from '@/components/ui/dropdown-menu';
+import { DropdownMenu } from '@/components/ui/dropdown-menu';
 import { DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@radix-ui/react-dropdown-menu';
 import { DotFilledIcon, DotsVerticalIcon } from '@radix-ui/react-icons';
 
@@ -21,32 +21,33 @@ const ProjectCard = () => {
               </p>
             </div>
             <div className="">
-                <DropdownMenu>
-                  <DropdownMenuTrigger>
-                    <Button className='rounded-full' variant={'ghost'} size={'icon'}>
-                      <DotsVerticalIcon/>
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent>
-                    <DropdownMenuItem>
-                      Update
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                      Delete
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </div>
+              <DropdownMenu>
+                <DropdownMenuTrigger>
+                  <Button className='rounded-full' variant={'ghost'} size={'icon'}>
+                    <DotsVerticalIcon />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className='bg-popover p-2'>
+                  <DropdownMenuItem>
+                    Update
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    Delete
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+
+              </DropdownMenu>
+            </div>
           </div>
-          
-              <p className='text-gray-500 text-sm '>Lorem ipsum dolor sit amet, consectetur adipisicing elit. </p>
+
+          <p className='text-gray-500 text-sm '>Lorem ipsum dolor sit amet, consectetur adipisicing elit. </p>
         </div>
         <div className="flex flex-wrap gap-2 items-center ">
-{
-  ['React', 'Node', 'Express', 'MongoDB'].map((tag) => (
-    <Badge key={tag} variant={'outline'} >{tag}</Badge>
-  ))
-}
+          {
+            ['React', 'Node', 'Express', 'MongoDB'].map((tag) => (
+              <Badge key={tag} variant={'outline'} >{tag}</Badge>
+            ))
+          }
 
         </div>
       </div>
