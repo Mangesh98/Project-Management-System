@@ -1,12 +1,11 @@
 import { Button } from "@/components/ui/button"
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { Select, SelectContent, SelectItem } from "@/components/ui/select"
-import { DialogClose } from "@radix-ui/react-dialog"
-import { SelectTrigger, SelectValue } from "@radix-ui/react-select"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { useForm } from "react-hook-form"
 import { tags } from "../ProjectList/ProjectList"
 import { Cross1Icon } from "@radix-ui/react-icons"
+import { DialogClose } from "@/components/ui/dialog"
 
 const CreateProjectForm = () => {
     const form = useForm({
@@ -67,7 +66,7 @@ const CreateProjectForm = () => {
                                 defaultValue="fullstack"
 
                             >
-                                <SelectTrigger className="flex h-9 w-full items-center justify-between whitespace-nowrap rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1">
+                                <SelectTrigger >
                                     <SelectValue placeholder="Category" />
                                 </SelectTrigger>
                                 <SelectContent>
