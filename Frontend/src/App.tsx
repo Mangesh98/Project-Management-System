@@ -5,18 +5,25 @@ import Navbar from './pages/Navbar/Navbar'
 import ProjectDetails from './pages/ProjectDetails/ProjectDetails'
 import IssueDetails from './pages/IssueDetails/IssueDetails'
 import Subsciption from './pages/Subscription/Subsciption'
+import Auth from './pages/Auth/Auth'
 function App() {
 
   return (
     <>
-    <Navbar/>
-     <Routes>
-        <Route path="/" element={<Home/>}/>
-        <Route path='/project/:projectId' element={<ProjectDetails/>}/>
-        <Route path='/project/:projectId/issue/:issueId' element={<IssueDetails/>}/>
+      {
+        false ?
+          <div className="">
+            <Navbar />
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path='/project/:projectId' element={<ProjectDetails />} />
+              <Route path='/project/:projectId/issue/:issueId' element={<IssueDetails />} />
 
-        <Route path="/upgrade_plan" element={<Subsciption/>}/>
-    </Routes>
+              <Route path="/upgrade_plan" element={<Subsciption />} />
+            </Routes>
+          </div>
+          : <Auth />
+      }
     </>
   )
 }
