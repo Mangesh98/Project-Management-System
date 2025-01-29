@@ -10,7 +10,7 @@ import ChatBox from "./ChatBox"
 
 const ProjectDetails = () => {
     function handleProjectInvitaion(event: any): void {
-        throw new Error("Function not implemented.")
+        throw new Error("Function not implemented.");
     }
 
     return (
