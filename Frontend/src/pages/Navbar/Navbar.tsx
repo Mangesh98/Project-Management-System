@@ -3,12 +3,14 @@ import { Dialog, DialogContent, DialogHeader, DialogTrigger } from "@/components
 import CreateProjectForm from "../Project/CreateProjectForm"
 import { PersonIcon } from "@radix-ui/react-icons"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import { useNavigate } from "react-router-dom"
 
 const Navbar = () => {
+    const navigate = useNavigate()
     return (
         <div className="border-b py-4 flex items-center justify-between mx-4">
             <div className="flex items-center gap-3 ">
-                <p className="cursor-pointer">
+                <p onClick={()=>navigate("/")} className="cursor-pointer">
                     Porject Managment
                 </p>
                 <Dialog>
