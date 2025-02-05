@@ -5,7 +5,7 @@ const initialState = {
 	error: null,
 };
 
-export const chatReducer = (state = initialState, action: any) => {
+export const commentReducer = (state = initialState, action: any) => {
 	switch (action.type) {
 		case actionType.FETCH_COMMENTS_REQUEST:
 		case actionType.CREATE_COMMENT_REQUEST:
