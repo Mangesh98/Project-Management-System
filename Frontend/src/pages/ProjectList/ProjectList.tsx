@@ -11,7 +11,7 @@ import {
 import { ChangeEvent, useEffect, useState } from "react";
 import ProjectCard from "../Project/ProjectCard";
 import { useAppDispatch, useAppSelector } from "@/Redux/Hook";
-import { fetchProjects } from "@/Redux/Project/Action";
+import { fetchProjects, searchProject } from "@/Redux/Project/Action";
 import { categories, tags } from "./constants";
 
 export interface ProjectType {
@@ -49,20 +49,33 @@ const ProjectList = () => {
 	const { project } = useAppSelector((store) => store);
 	const dispatch = useAppDispatch();
 	const projects: ProjectType[] = project.projects;
+	const searchProjects: ProjectType[] = project.searchProjects;
 
 	useEffect(() => {
 		dispatch(fetchProjects({}));
 	}, []);
 
-
 	const [keyword, setKeyword] = useState<string>("");
 
-	function handleFilterChange(category: string, value: string): void {
-		console.log(category, value);
+	function handleFilterTag(tag: string): void {
+		if (tag === "all") {
+			dispatch(fetchProjects({}));
+			return;
+		}
+		dispatch(fetchProjects({ tag: tag }));
 	}
-
+	function handleFilterCategory(category: string): void {
+		if (category === "all") {
+			dispatch(fetchProjects({}));
+			return;
+		}
+		dispatch(fetchProjects({ category: category }));
+	}
 	function handleSearchChange(event: ChangeEvent<HTMLInputElement>): void {
-		setKeyword(event.target.value);
+		const search: string = event.target.value;
+		setKeyword(search);
+		dispatch(searchProject({ search }));
+		console.log("searchProjects() : ", searchProjects);
 	}
 
 	return (
@@ -86,9 +99,7 @@ const ProjectList = () => {
 										<RadioGroup
 											className="space-y-5 pt-5"
 											defaultValue="all"
-											onValueChange={(value) =>
-												handleFilterChange("category", value)
-											}
+											onValueChange={(value) => handleFilterCategory(value)}
 										>
 											{categories.map((category) => (
 												<div
@@ -115,9 +126,7 @@ const ProjectList = () => {
 										<RadioGroup
 											className="space-y-5 pt-5"
 											defaultValue="all"
-											onValueChange={(value) =>
-												handleFilterChange("tag", value)
-											}
+											onValueChange={(value) => handleFilterTag(value)}
 										>
 											{tags.map((tag) => (
 												<div
@@ -151,10 +160,8 @@ const ProjectList = () => {
 					<div className="mt-5">
 						<div className="space-y-5 min-h-[74vh]">
 							{keyword
-								? [1, 1, 1].map((_, item) => (
-										<>
-											<h1 key={item}>hello</h1>
-										</>
+								? searchProjects.map((project) => (
+										<ProjectCard key={project.id} project={project} />
 								  ))
 								: projects.map((project) => (
 										<ProjectCard key={project.id} project={project} />

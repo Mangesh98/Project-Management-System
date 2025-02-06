@@ -35,12 +35,12 @@ interface DispatchArg {
 }
 
 export const fetchProjects =
-	(search: FetchProjectsParams) =>
+	({category,tag}: FetchProjectsParams) =>
 	async (dispatch: (arg: DispatchArg) => void) => {
 		dispatch({ type: FETCH_PROJECT_REQUEST });
 		try {
 			const { data } = await api.get("/api/projects", {
-				params: { search },
+				params: { category, tag},
 			});
 			console.log("fetchProjects() : ", data);
 			if (data) {
