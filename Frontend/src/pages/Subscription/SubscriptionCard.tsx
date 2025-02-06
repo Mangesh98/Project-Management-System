@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { CheckCircleIcon } from "lucide-react";
 
-{/* <SubsciptionCard data={{ planname: "Annual Paid Plan", fetures: annualPlan, 
+{/* <SubscriptionCard data={{ planename: "Annual Paid Plan", fetuses: annualPlan, 
     planType: "ANNUALLY", price: 6711,
      buttonName: true ? "Current Plan" : "Get Started" }} /> */}
 interface PropsInterface {
@@ -14,7 +14,7 @@ interface PropsInterface {
     };
 }
 
-const SubsciptionCard = ({ data }: PropsInterface) => {
+const SubscriptionCard = ({ data }: PropsInterface) => {
     return (
         <div className="rounded-xl bg-[#1b1b1b] bg-opacity-20 shadow-[#14173b] shadow-2xl card p-5 space-y-5 w-[19rem]">
             <p>{data.planName}</p>
@@ -43,4 +43,4 @@ const SubsciptionCard = ({ data }: PropsInterface) => {
     )
 }
 
-export default SubsciptionCard
+export default SubscriptionCard

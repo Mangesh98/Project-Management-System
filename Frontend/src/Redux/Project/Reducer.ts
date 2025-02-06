@@ -1,3 +1,4 @@
+import { ProjectType } from "@/pages/ProjectList/ProjectList";
 import {
 	ACCEPT_PROJECT_INVITATION_FAILURE,
 	ACCEPT_PROJECT_INVITATION_REQUEST,
@@ -44,7 +45,7 @@ export const projectReducer = (state = initialState, action: any) => {
 			return {
 				...state,
 				loading: false,
-				projects: action.payload,
+				projects: action.projects,
 				error: null,
 			};
 		case SEARCH_PROJECT_SUCCESS:
@@ -73,7 +74,7 @@ export const projectReducer = (state = initialState, action: any) => {
 				...state,
 				loading: false,
 				projects: state.projects.filter(
-					(project: any) => project.id === action.projectId
+					(project: ProjectType) => project.id !== action.projectId
 				),
 				error: null,
 			};
@@ -81,7 +82,7 @@ export const projectReducer = (state = initialState, action: any) => {
 			return {
 				...state,
 				loading: false,
-				projects: state.projects.map((project: any) => {
+				projects: state.projects.map((project: ProjectType) => {
 					if (project.id === action.projectId) {
 						return {
 							...project,

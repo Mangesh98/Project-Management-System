@@ -1,17 +1,25 @@
 import { Button } from "@/components/ui/button"
-import { Dialog, DialogContent, DialogHeader, DialogTrigger } from "@/components/ui/dialog"
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import CreateProjectForm from "../Project/CreateProjectForm"
 import { PersonIcon } from "@radix-ui/react-icons"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { useNavigate } from "react-router-dom"
+import { useAppDispatch, useAppSelector } from "@/Redux/Hook";
+import { logout } from "@/Redux/Auth/Action";
 
 const Navbar = () => {
     const navigate = useNavigate()
+    const dispatch=useAppDispatch()
+    const {auth} = useAppSelector(store=>store);
+    const handleLogout = () => {
+        dispatch(logout());
+    }
+
     return (
         <div className="border-b py-4 flex items-center justify-between mx-4">
             <div className="flex items-center gap-3 ">
                 <p onClick={()=>navigate("/")} className="cursor-pointer">
-                    Porject Managment
+                    Project Management
                 </p>
                 <Dialog>
                     <DialogTrigger>
@@ -20,7 +28,10 @@ const Navbar = () => {
                         </Button>
                     </DialogTrigger>
                     <DialogContent>
-                        <DialogHeader>Create New Project</DialogHeader>
+                        <DialogHeader>
+                            <DialogTitle>Create New Project</DialogTitle>
+                            <DialogDescription>You can create new project here</DialogDescription>
+                            </DialogHeader>
                         <CreateProjectForm />
                     </DialogContent>
                 </Dialog>
@@ -34,12 +45,12 @@ const Navbar = () => {
                         </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent>
-                        <DropdownMenuItem>
+                        <DropdownMenuItem onClick={handleLogout}>
                             Logout
                         </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
-                <p>Mangesh</p>
+                <p>{auth.user.fullName || "User"}</p>
             </div>
 
         </div>

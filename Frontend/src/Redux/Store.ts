@@ -16,3 +16,5 @@ const rootReducer = combineReducers({
 	subscription:subscriptionReducer,
 });
 export const store = legacy_createStore(rootReducer, applyMiddleware(thunk));
+export type RootState = ReturnType<typeof store.getState>
+export type AppDispatch = typeof store.dispatch

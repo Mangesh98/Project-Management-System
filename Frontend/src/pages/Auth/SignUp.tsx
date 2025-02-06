@@ -1,21 +1,31 @@
 import { Button } from "@/components/ui/button"
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { useForm } from "react-hook-form"
+import { register } from "@/Redux/Auth/Action";
+import { useAppDispatch } from "@/Redux/Hook";
+import { useForm, SubmitHandler } from "react-hook-form";
+
+interface SignUpFormValues {
+    fullName: string;
+    email: string;
+    password: string;
+}
 
 const SignUp = () => {
-    const form = useForm({
-        // resolver:
+    const dispatch = useAppDispatch()
+
+    const form = useForm<SignUpFormValues>({
         defaultValues: {
             fullName: "",
             email: "",
             password: ""
         }
-    })
+    });
 
-    function handleSubmit(data: any): void {
-        console.log(data)
-    }
+    const handleSubmit: SubmitHandler<SignUpFormValues> = (data) => {
+        dispatch(register(data));
+    };
+
     return (
         <div className="space-y-5">
             <h1>Register</h1>
@@ -26,44 +36,39 @@ const SignUp = () => {
                         render={({ field }) =>
                             <FormItem>
                                 <FormControl>
-                                    <Input {...field} placeholder="Full Name"
-                                        type="text" className="border w-full border-gray-700 p-5"
-                                    />
+                                    <Input {...field} placeholder="Full Name" />
                                 </FormControl>
                                 <FormMessage />
-                            </FormItem>}
+                            </FormItem>
+                        }
                     />
                     <FormField control={form.control}
                         name="email"
                         render={({ field }) =>
                             <FormItem>
                                 <FormControl>
-                                    <Input {...field} placeholder="Email"
-                                        type="email" className="border w-full border-gray-700 p-5"
-                                    />
+                                    <Input {...field} placeholder="Email" />
                                 </FormControl>
                                 <FormMessage />
-                            </FormItem>}
+                            </FormItem>
+                        }
                     />
                     <FormField control={form.control}
                         name="password"
                         render={({ field }) =>
                             <FormItem>
                                 <FormControl>
-                                    <Input {...field} placeholder="Password "
-                                        type="password" className="border w-full border-gray-700 p-5"
-                                    />
+                                    <Input {...field} type="password" placeholder="Password" />
                                 </FormControl>
                                 <FormMessage />
-                            </FormItem>}
+                            </FormItem>
+                        }
                     />
-                    <Button type="submit" className="w-full mt-5">Register</Button>
-
-
+                    <Button type="submit">Register</Button>
                 </form>
             </Form>
         </div>
-    )
-}
+    );
+};
 
-export default SignUp
+export default SignUp;

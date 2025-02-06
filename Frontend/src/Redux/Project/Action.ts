@@ -22,24 +22,25 @@ import {
 	SEARCH_PROJECT_REQUEST,
 	SEARCH_PROJECT_SUCCESS,
 } from "./ActionType";
+import { CreateProjectForm } from "@/pages/Project/CreateProjectForm";
 
 interface FetchProjectsParams {
-	category: string;
-	tag: string;
+	category?: string;
+	tag?: string;
 }
 
 interface DispatchArg {
 	type: string;
-	projects?: any;
+	projects?: unknown;
 }
 
 export const fetchProjects =
-	({ category, tag }: FetchProjectsParams) =>
+	(search: FetchProjectsParams) =>
 	async (dispatch: (arg: DispatchArg) => void) => {
 		dispatch({ type: FETCH_PROJECT_REQUEST });
 		try {
 			const { data } = await api.get("/api/projects", {
-				params: { category, tag },
+				params: { search },
 			});
 			console.log("fetchProjects() : ", data);
 			if (data) {
@@ -72,12 +73,7 @@ export const searchProject =
 		}
 	};
 
-interface CreateProjectParams {
-	name: string;
-	description: string;
-	startDate: string;
-	endDate: string;
-}
+
 
 interface DispatchProject {
 	type: string;
@@ -85,7 +81,7 @@ interface DispatchProject {
 }
 
 export const createProject =
-	(projectData: CreateProjectParams) =>
+	(projectData: CreateProjectForm) =>
 	async (dispatch: (arg: DispatchProject) => void) => {
 		dispatch({ type: CREATE_PROJECT_REQUEST });
 		try {
@@ -120,17 +116,14 @@ export const fetchProjectById =
 		}
 	};
 
-interface DeleteProjectParams {
-	projectId: string;
-}
 
 interface DispatchDeleteArg {
 	type: string;
-	projectId?: string;
+	projectId?: number;
 }
 
 export const deleteProject =
-	({ projectId }: DeleteProjectParams) =>
+	(projectId :number) =>
 	async (dispatch: (arg: DispatchDeleteArg) => void) => {
 		dispatch({ type: DELETE_PROJECT_REQUEST });
 		try {
