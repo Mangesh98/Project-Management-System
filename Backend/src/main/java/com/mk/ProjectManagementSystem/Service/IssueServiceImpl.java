@@ -46,6 +46,7 @@ public class IssueServiceImpl implements IssueService {
        newIssue.setDueDate(issue.getDueDate());
        newIssue.setPriority(issue.getPriority());
        newIssue.setProject(project);
+       newIssue.setProjectID(project.getId());
        return issueRepository.save(newIssue);
     }
 

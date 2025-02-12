@@ -35,6 +35,7 @@ public class IssueController {
            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
         Issue issue = issueService.getIssueById(issueId);
+        System.out.println("issueId :"+issue);
         if (issue == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -61,17 +62,25 @@ public class IssueController {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
         Issue newIssue = issueService.createIssue(issue, user);
+        if(newIssue == null){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        IssueDTO issueDTO = getIssueDTO(newIssue);
+        return new ResponseEntity<>(issueDTO, HttpStatus.CREATED);
+    }
+    private static IssueDTO getIssueDTO(Issue newIssue) {
         IssueDTO issueDTO = new IssueDTO();
-        issueDTO.setDescription(issue.getDescription());
+        issueDTO.setDescription(newIssue.getDescription());
         issueDTO.setDueDate(newIssue.getDueDate());
         issueDTO.setId(newIssue.getId());
+        issueDTO.setProject(newIssue.getProject());
         issueDTO.setProjectId(newIssue.getProjectID());
         issueDTO.setPriority(newIssue.getPriority());
         issueDTO.setStatus(newIssue.getStatus());
         issueDTO.setTitle(newIssue.getTitle());
         issueDTO.setTags(newIssue.getTags());
         issueDTO.setAssignee(newIssue.getAssignee());
-        return new ResponseEntity<>(issueDTO, HttpStatus.CREATED);
+        return issueDTO;
     }
 
     @DeleteMapping("/{issueId}")

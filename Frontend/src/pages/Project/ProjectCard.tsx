@@ -31,7 +31,7 @@ const ProjectCard = ({ project }: ProjectCardProps) => {
 					<div className="flex justify-between">
 						<div className="flex items-center gap-5">
 							<h1
-								onClick={() => navigate("/project/3")}
+								onClick={() => navigate("/project/"+project.id)}
 								className="cursor-pointer text-lg font-bold"
 							>
 								{project.name}

@@ -4,6 +4,10 @@ import IssueCard from "./IssueCard"
 import { Button } from "@/components/ui/button";
 import { PlusIcon } from "lucide-react";
 import CreateIssueForm from "./CreateIssueForm";
+import { useAppDispatch, useAppSelector } from "@/Redux/Hook";
+import { useEffect } from "react";
+import { fetchIssueById, IssueType } from "@/Redux/Issue/Action";
+import { useParams } from "react-router-dom";
 
 interface IssueListProps {
     title: string;
@@ -11,6 +15,13 @@ interface IssueListProps {
 }
 
 const IssueList = ({ title, status }: IssueListProps) => {
+    const dispatch=useAppDispatch()
+    const {projectId} = useParams()
+    const {issue} = useAppSelector((state)=>state);
+    useEffect(()=>{
+        dispatch(fetchIssueById(projectId));
+    },[projectId])
+
     return (
         <div>
             <Dialog>
@@ -21,8 +32,8 @@ const IssueList = ({ title, status }: IssueListProps) => {
                     <CardContent className="px-2">
                         <div className="space-y-2">
                             {
-                                [1, 2, 3].map((_, index) =>
-                                    <IssueCard key={index} />
+                                issue.issues.map((issue:IssueType) =>
+                                    <IssueCard key={issue.id} {...issue}  />
                                 )
                             }
                         </div>
@@ -40,7 +51,7 @@ const IssueList = ({ title, status }: IssueListProps) => {
                     <DialogHeader>
                         <DialogTitle>Create New Issue</DialogTitle>
                     </DialogHeader>
-                    <CreateIssueForm />
+                    <CreateIssueForm projectId={projectId}/>
                 </DialogContent>
             </Dialog>
         </div>

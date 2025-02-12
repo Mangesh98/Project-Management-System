@@ -19,6 +19,18 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", fullName='" + fullName + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", projectSize=" + projectSize +
+                ", assignedIssues=" + assignedIssues +
+                '}';
+    }
+
     private String fullName;
     private String email;
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)

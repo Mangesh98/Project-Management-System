@@ -20,7 +20,7 @@ export interface ProjectType {
 	description: string;
 	category: string;
 	tags: string[];
-	owner: Owner | null;
+	owner: Owner;
 	issues: Issue[];
 	team: TeamMember[];
 }

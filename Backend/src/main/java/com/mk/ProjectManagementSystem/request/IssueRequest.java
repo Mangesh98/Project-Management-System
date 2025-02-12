@@ -13,6 +13,18 @@ public class IssueRequest {
     private String priority;
     private LocalDate dueDate;
 
+    @Override
+    public String toString() {
+        return "IssueRequest{" +
+                "title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", status='" + status + '\'' +
+                ", projectId=" + projectId +
+                ", priority='" + priority + '\'' +
+                ", dueDate=" + dueDate +
+                '}';
+    }
+
     public IssueRequest() {
     }
 
@@ -25,6 +37,7 @@ public class IssueRequest {
     }
 
     public String getDescription() {
+        System.out.println("description"+description);
         return description;
     }
 

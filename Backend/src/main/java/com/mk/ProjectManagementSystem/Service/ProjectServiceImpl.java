@@ -29,6 +29,7 @@ public class ProjectServiceImpl implements ProjectService {
         newProject.setCategory(project.getCategory());
         newProject.setTags(project.getTags());
         newProject.getTeam().add(user);
+        newProject.setOwner(user);
         Project savedProject = projectRepository.save(newProject);
         Chat chat = new Chat();
         chat.setProject(savedProject);
