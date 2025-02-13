@@ -10,13 +10,23 @@ import {
 import { DotsVerticalIcon, PersonIcon } from "@radix-ui/react-icons";
 import UserList from "./UserList";
 import { useNavigate } from "react-router-dom";
-import { IssueType } from "@/Redux/Issue/Action";
+import { deleteIssue, IssueType } from "@/Redux/Issue/Action";
+import { useAppDispatch } from "@/Redux/Hook";
 
 
 
 const IssueCard = (issue:IssueType) => {
+
+	const dispatch=useAppDispatch();
+
 	const navigate = useNavigate();
-	console.log(issue);
+
+	const handleIssueDelete=(issueId:number|undefined)=>{
+		if (issueId === undefined) return;
+		dispatch(deleteIssue(issueId));
+	}
+
+	// console.log(issue);
 	return (
 		<Card className="rounded-md py-1 pb-2">
 			<CardHeader className="py-0 pb-1">
@@ -25,7 +35,7 @@ const IssueCard = (issue:IssueType) => {
 						onClick={() => navigate(`/project/${issue.projectId}/issue/${issue.id}`)}
 						className="text-sm cursor-pointer"
 					>
-						Issue Title
+						{issue.title}
 					</CardTitle>
 					<DropdownMenu>
 						<DropdownMenuTrigger>
@@ -37,7 +47,7 @@ const IssueCard = (issue:IssueType) => {
 							<DropdownMenuItem>In Progress</DropdownMenuItem>
 							<DropdownMenuItem>Done</DropdownMenuItem>
 							<DropdownMenuItem>Edit</DropdownMenuItem>
-							<DropdownMenuItem>Delete</DropdownMenuItem>
+							<DropdownMenuItem onClick={()=>handleIssueDelete(issue.id)}>Delete</DropdownMenuItem>
 						</DropdownMenuContent>
 					</DropdownMenu>
 				</div>
@@ -60,7 +70,7 @@ const IssueCard = (issue:IssueType) => {
 							</Button>
 						</DropdownMenuTrigger>
 						<DropdownMenuContent>
-							<UserList />
+							<UserList issueDetails={issue} />
 						</DropdownMenuContent>
 					</DropdownMenu>
 				</div>

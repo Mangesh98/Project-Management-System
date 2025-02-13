@@ -22,8 +22,7 @@ import { ProjectType } from "../ProjectList/ProjectList";
 
 const ProjectDetails = () => {
 	const dispatch = useAppDispatch();
-	const { project } = useAppSelector((store) => store);
-	const projectDetails: ProjectType | undefined = project.projectDetails;
+	const projectDetails: ProjectType | undefined = useAppSelector((store) => store.project.projectDetails);
 	const { projectId } = useParams();
 
 	useEffect(() => {

@@ -18,12 +18,12 @@ interface IssueFormData {
 }
 interface CreateIssueFormProps {
 	projectId: number;
+	status: string;
 }
-const CreateIssueForm = ({projectId}:CreateIssueFormProps) => {
+const CreateIssueForm = ({ projectId, status }: CreateIssueFormProps) => {
 	const dispatch = useAppDispatch();
 
 	const form = useForm<IssueFormData>({
-		// resolver:
 		defaultValues: {
 			title: "",
 			description: "",
@@ -36,7 +36,7 @@ const CreateIssueForm = ({projectId}:CreateIssueFormProps) => {
 			title: data.title,
 			description: data.description,
 			projectId: projectId,
-			status: "open",
+			status: status,
 			dueDate: new Date(),
 			priority: "low",
 		};

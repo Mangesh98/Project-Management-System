@@ -5,8 +5,8 @@ import { Button } from "@/components/ui/button";
 import { PlusIcon } from "lucide-react";
 import CreateIssueForm from "./CreateIssueForm";
 import { useAppDispatch, useAppSelector } from "@/Redux/Hook";
-import { useEffect } from "react";
-import { fetchIssueById, IssueType } from "@/Redux/Issue/Action";
+import { useEffect, useState } from "react";
+import { fetchIssue, IssueType } from "@/Redux/Issue/Action";
 import { useParams } from "react-router-dom";
 
 interface IssueListProps {
@@ -15,12 +15,19 @@ interface IssueListProps {
 }
 
 const IssueList = ({ title, status }: IssueListProps) => {
-    const dispatch=useAppDispatch()
-    const {projectId} = useParams()
-    const {issue} = useAppSelector((state)=>state);
-    useEffect(()=>{
-        dispatch(fetchIssueById(projectId));
-    },[projectId])
+    const dispatch = useAppDispatch()
+    let projectId:number = 0;
+    const param = useParams()
+    if(param.projectId !== undefined){
+        projectId = parseInt(param.projectId);
+    }
+
+    const issue = useAppSelector((state) => state.issue);
+
+    useEffect(() => {
+        if (projectId === undefined) return;
+        dispatch(fetchIssue(projectId));
+    }, [projectId])
 
     return (
         <div>
@@ -32,10 +39,12 @@ const IssueList = ({ title, status }: IssueListProps) => {
                     <CardContent className="px-2">
                         <div className="space-y-2">
                             {
-                                issue.issues.map((issue:IssueType) =>
-                                    <IssueCard key={issue.id} {...issue}  />
+
+                                issue.issues.filter((issue=>issue.status==status)).map((issue: IssueType) =>
+                                    <IssueCard key={issue.id} {...issue} />
                                 )
                             }
+
                         </div>
                     </CardContent>
                     <CardFooter>
@@ -51,7 +60,7 @@ const IssueList = ({ title, status }: IssueListProps) => {
                     <DialogHeader>
                         <DialogTitle>Create New Issue</DialogTitle>
                     </DialogHeader>
-                    <CreateIssueForm projectId={projectId}/>
+                    <CreateIssueForm projectId={projectId} status={status}/>
                 </DialogContent>
             </Dialog>
         </div>

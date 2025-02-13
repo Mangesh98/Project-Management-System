@@ -38,10 +38,25 @@ public class Issue {
     @OneToMany(mappedBy = "issue", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments=new ArrayList<>();
 
+    @Override
+    public String toString() {
+        return "Issue{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", status='" + status + '\'' +
+                ", projectID=" + projectID +
+                ", priority='" + priority + '\'' +
+                ", dueDate=" + dueDate +
+                ", tags=" + tags +
+                ", assignee=" + assignee +
+                ", project=" + project +
+                ", comments=" + comments +
+                '}';
+    }
 
     public Issue() {
     }
-
     public Issue(Long id, String title, String description, String status, Long projectID, String priority, LocalDate dueDate, List<String> tags, User assignee, Project project, List<Comment> comments) {
         this.id = id;
         this.title = title;

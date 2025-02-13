@@ -37,6 +37,7 @@ public class ProjectController {
                                                         @RequestHeader("Authorization") String jwt
     ) {
         User user = userService.findUserProfileByJwt(jwt);
+        System.out.println(user);
         if (user == null) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
