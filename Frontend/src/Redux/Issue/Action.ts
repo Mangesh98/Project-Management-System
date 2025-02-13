@@ -20,7 +20,7 @@ export interface IssueType {
 }
 
 // Reusable error handler
-const handleError = (error: unknown, type: string, dispatch: Dispatch) => {
+export const handleError = (error: unknown, type: string, dispatch: Dispatch) => {
 	console.log(`${type} :`, error);
 	const errorMessage = error instanceof Error ? error.message : "An unknown error occurred";
 	dispatch({ type, error: errorMessage });

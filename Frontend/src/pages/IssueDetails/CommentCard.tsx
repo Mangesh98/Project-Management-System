@@ -1,22 +1,33 @@
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { TrashIcon } from "lucide-react"
+import { CommentType } from "./IssueDetails"
+import { useAppDispatch } from "@/Redux/Hook";
+import { deleteComment } from "@/Redux/Comment/Action";
 
-const CommentCard = () => {
+interface CommentCardProps {
+    comment:CommentType;
+}
+
+const CommentCard = ({comment}:CommentCardProps) => {
+    const dispatch=useAppDispatch();
+    const handleCommentDelete=(commentId:number)=>{
+        dispatch(deleteComment(commentId));
+    }
     return (
         <div className="flex justify-between">
             <div className="flex items-center gap-4">
                 <Avatar>
                     <AvatarFallback>
-                        M
+                        {comment.user.fullName[0].toUpperCase()}
                     </AvatarFallback>
                 </Avatar>
                 <div className="space-y-1">
-                    <p>Mangesh kokare</p>
-                    <p>How much work is pending ?</p>
+                    <p>{comment.user.fullName}</p>
+                    <p>{comment.content}</p>
                 </div>
             </div>
-            <Button className="rounded-full" variant={"ghost"} size={"icon"}>
+            <Button onClick={()=>handleCommentDelete(comment.id)} className="rounded-full" variant={"ghost"} size={"icon"}>
                 <TrashIcon />
             </Button>
 

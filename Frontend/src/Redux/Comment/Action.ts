@@ -1,74 +1,41 @@
 import api from "@/Config/Config";
 import * as actionType from "./ActionType";
+import { Dispatch } from "redux";
+import { handleError } from "../Issue/Action";
 
-export const createComment = (commentData: any) => async (dispatch: any) => {
+export interface CommentDataType {
+	issueId: number;
+	content: string;
+}
+
+export const createComment = (commentData: CommentDataType) => async (dispatch: Dispatch) => {
 	dispatch({ type: actionType.CREATE_COMMENT_REQUEST });
 	try {
 		const { data } = await api.post("/api/comments", commentData);
-		console.log("createComment() : ", data);
-		if (data) {
-			dispatch({ type: actionType.CREATE_COMMENT_SUCCESS, comment: data });
-		}
+		dispatch({ type: actionType.CREATE_COMMENT_SUCCESS, comment: data });
 	} catch (error) {
-		console.log("createComment() : ", error);
-		if (error instanceof Error) {
-			dispatch({
-				type: actionType.CREATE_COMMENT_FAILURE,
-				error: error.message,
-			});
-		} else {
-			dispatch({
-				type: actionType.CREATE_COMMENT_FAILURE,
-				error: "An unknown error occurred",
-			});
-		}
+		handleError(error, actionType.CREATE_COMMENT_FAILURE, dispatch);
 	}
 };
 
-export const deleteComment = (commentId: any) => async (dispatch: any) => {
+
+
+export const deleteComment = (commentId: number) => async (dispatch: Dispatch) => {
 	dispatch({ type: actionType.DELETE_COMMENT_REQUEST });
 	try {
-		const { data } = await api.delete(`/api/comments/${commentId}`);
-		console.log("deleteComment() : ", data);
-		if (data) {
-			dispatch({ type: actionType.DELETE_COMMENT_SUCCESS, commentId });
-		}
+		await api.delete(`/api/comments/${commentId}`);
+		dispatch({ type: actionType.DELETE_COMMENT_SUCCESS, commentId });
 	} catch (error) {
-		console.log("deleteComment() : ", error);
-		if (error instanceof Error) {
-			dispatch({
-				type: actionType.DELETE_COMMENT_FAILURE,
-				error: error.message,
-			});
-		} else {
-			dispatch({
-				type: actionType.DELETE_COMMENT_FAILURE,
-				error: "An unknown error occurred",
-			});
-		}
+		handleError(error, actionType.DELETE_COMMENT_FAILURE, dispatch);
 	}
 };
 
-export const fetchComments = (issueId: any) => async (dispatch: any) => {
+export const fetchComments = (issueId: number) => async (dispatch: Dispatch) => {
 	dispatch({ type: actionType.FETCH_COMMENTS_REQUEST });
 	try {
 		const { data } = await api.get(`/api/comments/${issueId}`);
-		console.log("fetchComments() : ", data);
-		if (data) {
-			dispatch({ type: actionType.FETCH_COMMENTS_SUCCESS, comments: data });
-		}
+		dispatch({ type: actionType.FETCH_COMMENTS_SUCCESS, comments: data });
 	} catch (error) {
-		console.log("fetchComments() : ", error);
-		if (error instanceof Error) {
-			dispatch({
-				type: actionType.FETCH_COMMENTS_FAILURE,
-				error: error.message,
-			});
-		} else {
-			dispatch({
-				type: actionType.FETCH_COMMENTS_FAILURE,
-				error: "An unknown error occurred",
-			});
-		}
+		handleError(error, actionType.FETCH_COMMENTS_FAILURE, dispatch);
 	}
 };

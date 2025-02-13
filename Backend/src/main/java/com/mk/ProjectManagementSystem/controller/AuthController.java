@@ -81,7 +81,7 @@ public class AuthController {
 
         } catch (Exception e) {
             // Log the exception for debugging
-            e.printStackTrace(); // Replace with proper logging in production
+//            e.printStackTrace(); // Replace with proper logging in production
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new AuthResponse(null, "An unexpected error occurred"));
         }
@@ -122,7 +122,7 @@ public class AuthController {
         } catch (Exception e) {
             // Log the exception for debugging
             // Avoid exposing detailed error messages to the client
-            e.printStackTrace(); // Replace with a proper logger in production
+//            e.printStackTrace(); // Replace with a proper logger in production
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new AuthResponse(null, "An unexpected error occurred"));
         }

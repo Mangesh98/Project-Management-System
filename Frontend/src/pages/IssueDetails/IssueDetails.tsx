@@ -8,12 +8,28 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { useAppDispatch, useAppSelector } from "@/Redux/Hook";
 import { useEffect } from "react";
-import { fetchIssueById, updateIssueStatus } from "@/Redux/Issue/Action";
+import { fetchIssueById, IssueType, updateIssueStatus } from "@/Redux/Issue/Action";
+import { fetchComments } from "@/Redux/Comment/Action";
+export interface UserType {
+    id: number;
+    fullName: string;
+    email: string;
+    projectSize: number;
+  }
+  export interface CommentType {
+    id: number;
+    content: string;
+    createdDateTime: string;
+    user: UserType;
+    issue: IssueType;
+  }
+  
 
 const IssueDetails = () => {
     const { projectId, issueId } = useParams<{ projectId: string, issueId: string }>();
     const dispatch=useAppDispatch();
     const {issueDetails}=useAppSelector((state)=>state.issue);
+    const {comments}=useAppSelector((state)=>state.comment);
     const handleUpdateIssueStatus=(value: string)=>{
         if(issueId===undefined) return;
         dispatch(updateIssueStatus(parseInt(issueId),value));
@@ -21,6 +37,9 @@ const IssueDetails = () => {
     useEffect(() => {
         if(issueId===undefined) return;
         dispatch(fetchIssueById(parseInt(issueId)));
+        dispatch(fetchComments(parseInt(issueId)));
+        console.log("comments ",comments);
+        
     },[])
     return (
         <div className="px-20 py-8 text-gray-400">
@@ -44,11 +63,11 @@ const IssueDetails = () => {
                                     All make changes to your account here
                                 </TabsContent>
                                 <TabsContent value="comments">
-                                    {issueId && <CreateCommentForm issueId={issueId} />}
+                                    {issueId && <CreateCommentForm issueId={parseInt(issueId)} />}
                                     <div className="mt-8 space-y-6 ">
                                         {
-                                            [1, 2, 3].map((issue) =>
-                                                <CommentCard key={issue} />
+                                            comments.map((comment:CommentType) =>
+                                                <CommentCard key={comment.id} comment={comment} />
                                             )
                                         }
                                     </div>
@@ -82,7 +101,7 @@ const IssueDetails = () => {
                                 {issueDetails?.assignee ? 
                                 <div className="flex items-center gap-3">
                                     <Avatar className="h-8 w-8 text-xs">
-                                        <AvatarFallback>
+                                          <AvatarFallback>
                                            {issueDetails.assignee.fullName.charAt(0).toUpperCase()}
                                         </AvatarFallback>
                                     </Avatar>

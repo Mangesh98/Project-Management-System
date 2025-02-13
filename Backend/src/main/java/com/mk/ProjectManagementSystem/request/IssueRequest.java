@@ -37,7 +37,6 @@ public class IssueRequest {
     }
 
     public String getDescription() {
-        System.out.println("description"+description);
         return description;
     }
 

@@ -35,7 +35,6 @@ public class IssueController {
            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
         Issue issue = issueService.getIssueById(issueId);
-        System.out.println("issueId :"+issue);
         if (issue == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
