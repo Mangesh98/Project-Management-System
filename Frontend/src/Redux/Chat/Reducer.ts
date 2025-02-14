@@ -1,5 +1,41 @@
+import { UserType } from "@/pages/IssueDetails/IssueDetails";
+import { IssueType } from "../Issue/Action";
 import * as actionType from "./ActionType";
-const initialState = {
+
+
+ 
+  export interface ProjectType {
+	id: number;
+	name: string;
+	description: string;
+	category: string;
+	tags: string[];
+	owner: UserType;
+	issues: IssueType[];
+	team: UserType[];
+  }
+  
+  export interface ChatType {
+	id: number;
+	name: string | null;
+	project: ProjectType;
+	users: UserType[];
+  }
+  export interface Message {
+	id: number;
+	content: string;
+	createdAt: string;
+	chat: ChatType;
+	sender: UserType;
+  }
+  export interface ChatState {
+	messages: Message[]; 
+	loading: boolean;
+	error: string | null;
+	chat: ChatType | null;
+  }
+  
+const initialState:ChatState = {
 	messages: [],
 	loading: false,
 	error: null,

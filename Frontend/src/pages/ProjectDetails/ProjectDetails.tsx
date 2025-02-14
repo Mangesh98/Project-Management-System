@@ -49,7 +49,7 @@ const ProjectDetails = () => {
 								</p>
 								<div className="flex">
 									<p className="w-36">Project Lead :</p>
-									<p>{projectDetails.owner.fullName}</p>
+									<p>{projectDetails.owner?.fullName}</p>
 								</div>
 								<div className="flex">
 									<p className="w-36">Members :</p>

@@ -3,7 +3,6 @@ import * as actionType from "./ActionType";
 import { ProjectType } from "@/pages/ProjectList/ProjectList";
 import { Dispatch } from "redux";
 
-// Define IssueType properly
 export interface IssueType {
 	id: number;
 	title: string;

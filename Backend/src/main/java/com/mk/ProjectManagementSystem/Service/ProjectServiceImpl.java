@@ -108,12 +108,9 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public Chat getChatByProjectId(Long projectId) {
-        Project project = projectRepository.findById(projectId).orElse(null);
-        if (project != null) {
-            return project.getChat();
-        }
-
-        return null;
+        return projectRepository.findById(projectId)
+                .map(Project::getChat)
+                .orElse(null);
     }
 
     @Override

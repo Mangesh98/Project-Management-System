@@ -1,3 +1,4 @@
+import { UserType } from "@/pages/IssueDetails/IssueDetails";
 import {
 	GET_USER_REQUEST,
 	GET_USER_SUCCESS,
@@ -8,7 +9,14 @@ import {
 	REGISTER_SUCCESS,
 } from "./ActionType";
 
-const initialState = {
+export interface UserState {
+	user: UserType | null;
+	loading: boolean;
+	error: string | null;
+	jwt: string | null;
+	projectSize: number;
+}
+const initialState: UserState = {
 	user: null,
 	loading: false,
 	error: null,

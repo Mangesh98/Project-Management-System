@@ -42,7 +42,7 @@ export const fetchProjects =
 			const { data } = await api.get("/api/projects", {
 				params: { category, tag},
 			});
-			console.log("fetchProjects() : ", data);
+			// console.log("fetchProjects() : ", data);
 			if (data) {
 				dispatch({ type: FETCH_PROJECT_SUCCESS, projects: data });
 			}
@@ -62,7 +62,7 @@ export const searchProject =
 		dispatch({ type: SEARCH_PROJECT_REQUEST });
 		try {
 			const { data } = await api.get("/api/projects/search?keyword=" + search);
-			console.log("searchProject() : ", data);
+			// console.log("searchProject() : ", data);
 
 			if (data) {
 				dispatch({ type: SEARCH_PROJECT_SUCCESS, projects: data });
@@ -86,7 +86,7 @@ export const createProject =
 		dispatch({ type: CREATE_PROJECT_REQUEST });
 		try {
 			const { data } = await api.post("/api/projects", projectData);
-			console.log("createProject() : ", data);
+			// console.log("createProject() : ", data);
 			if (data) {
 				dispatch({ type: CREATE_PROJECT_SUCCESS, project: data });
 			}
@@ -106,7 +106,7 @@ export const fetchProjectById =
 		dispatch({ type: FETCH_PROJECT_BY_ID_REQUEST });
 		try {
 			const { data } = await api.get(`/api/projects/${id}`);
-			console.log("fetchProjectById() : ", data);
+			// console.log("fetchProjectById() : ", data);
 			if (data) {
 				dispatch({ type: FETCH_PROJECT_BY_ID_SUCCESS, project: data });
 			}
@@ -128,7 +128,7 @@ export const deleteProject =
 		dispatch({ type: DELETE_PROJECT_REQUEST });
 		try {
 			const { data } = await api.delete(`/api/projects/${projectId}`);
-			console.log("deleteProject() : ", data);
+			// console.log("deleteProject() : ", data);
 			if (data) {
 				dispatch({ type: DELETE_PROJECT_SUCCESS, projectId });
 			}
@@ -157,7 +157,7 @@ export const inviteToProject =
 				email,
 				projectId,
 			});
-			console.log("inviteToProject() : ", data);
+			// console.log("inviteToProject() : ", data);
 			if (data) {
 				dispatch({ type: INVITE_TO_PROJECT_SUCCESS, payload: data });
 			}
@@ -181,7 +181,7 @@ export const acceptInvitation =
 					token: invitationToken,
 				},
 			});
-			console.log("acceptInvitation() : ", data);
+			// console.log("acceptInvitation() : ", data);
 			if (data) {
 				dispatch({ type: ACCEPT_PROJECT_INVITATION_SUCCESS, payload: data });
 				navigate("/project/" + data.projectId);
