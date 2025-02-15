@@ -22,6 +22,7 @@ public class SubscriptionController {
 
     @GetMapping("/user")
     public ResponseEntity<Subscription> getSubscriptions(@RequestHeader("Authorization") String jwtToken) {
+        System.out.println("jwtToken : "+jwtToken);
         User user = userService.findUserProfileByJwt(jwtToken);
         if (user == null) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);

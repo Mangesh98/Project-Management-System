@@ -9,9 +9,11 @@ import { useAppDispatch, useAppSelector } from "./Redux/Hook";
 import { useEffect } from "react";
 import { getUser } from "./Redux/Auth/Action";
 import Subscription from "./pages/Subscription/Subscription";
+import UpgradeSuccess from "./pages/Subscription/UpgradeSuccess";
 function App() {
 	const dispatch = useAppDispatch();
 	const { auth } = useAppSelector((store) => store);
+	;
 	useEffect(() => {
 		dispatch(getUser());
 	}, [auth.jwt]);
@@ -30,6 +32,7 @@ function App() {
 						/>
 
 						<Route path="/upgrade_plan" element={<Subscription />} />
+						<Route path="/upgrade_plan/success" element={<UpgradeSuccess/>} />
 					</Routes>
 				</div>
 			) : (

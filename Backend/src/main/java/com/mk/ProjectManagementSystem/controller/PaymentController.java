@@ -35,37 +35,66 @@ public class PaymentController {
         if (user == null) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
+
         int amount = 799 * 100;
         if (planType.equals(PlanType.ANNUALLY)) {
             amount = amount * 12;
             amount = (int) (amount * 0.7);
         }
-        try{
-            RazorpayClient razorpay = new RazorpayClient(apiKey,apiSecret);
+        int maxRetries = 3;
+        int retryCount = 0;
 
-            JSONObject customer = new JSONObject();
-            customer.put("name",user.getFullName());
-            customer.put("email",user.getEmail());
+        while (retryCount < maxRetries) {
+            try {
+                RazorpayClient razorpay = new RazorpayClient(apiKey, apiSecret);
+                JSONObject paymentLinkRequest = getJsonObject(planType, amount, user);
+                PaymentLink payment = razorpay.paymentLink.create(paymentLinkRequest);
+                String paymentLinkId = payment.get("id");
+                String paymentLinkUrl = payment.get("short_url");
+                return new ResponseEntity<>(new PaymentLinkResponse(paymentLinkId, paymentLinkUrl), HttpStatus.CREATED);
 
-            JSONObject notify = new JSONObject();
-            notify.put("email",true);
+            } catch (RazorpayException e) {
+                retryCount++;
+                System.out.println("Razorpay payment link creation failed: "+ e.getMessage());
+                System.out.println("Request details: planType="+ planType+", amount="+amount+" user="+user.getEmail());
+                e.printStackTrace();
+                if (retryCount == maxRetries) {
+                    e.printStackTrace();
+                    return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+                }
 
-            JSONObject paymentLinkRequest = new JSONObject();
-            paymentLinkRequest.put("amount",amount);
-            paymentLinkRequest.put("currency","INR");
-            paymentLinkRequest.put("customer",customer);
-            paymentLinkRequest.put("notify",notify);
-            FRONTEND_URL=FRONTEND_URL+"/upgrade_plan?planType"+planType;
-            paymentLinkRequest.put("callback",FRONTEND_URL);
-
-            PaymentLink payment=razorpay.paymentLink.create(paymentLinkRequest);
-            String paymentLinkId=payment.get("id");
-            String paymentLinkUrl=payment.get("short_url");
-            PaymentLinkResponse paymentLinkResponse=new PaymentLinkResponse(paymentLinkId,paymentLinkUrl);
-            return new ResponseEntity<>(paymentLinkResponse,HttpStatus.CREATED);
-        } catch (RazorpayException e) {
-            e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            }
         }
+        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+private JSONObject getJsonObject(PlanType planType, int amount, User user) {
+    JSONObject paymentLinkRequest = new JSONObject();
+
+    // Create customer object
+    JSONObject customer = new JSONObject();
+    customer.put("name", user.getFullName());
+    customer.put("email", user.getEmail());
+    // Either get phone from user object if you have it stored
+
+    // Create notification object
+    JSONObject notify = new JSONObject();
+    notify.put("email", true);
+
+    // Create notes object
+    JSONObject notes = new JSONObject();
+    notes.put("plan_type", planType.toString());
+
+    // Main payment link request
+    paymentLinkRequest.put("amount", amount);
+    paymentLinkRequest.put("currency", "INR");
+    paymentLinkRequest.put("accept_partial", false);
+    paymentLinkRequest.put("customer", customer);
+    paymentLinkRequest.put("notify", notify);
+    paymentLinkRequest.put("notes", notes);
+    paymentLinkRequest.put("callback_url", FRONTEND_URL + "/upgrade_plan/success/?planType=" + planType);
+    paymentLinkRequest.put("callback_method", "get");
+
+    return paymentLinkRequest;
+}
 }
