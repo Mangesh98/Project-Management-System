@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { UserState } from '@/Redux/Auth/Reducer'
-import { fetchChatByProject, fetchChatMessages, MessageType, sendMessage } from '@/Redux/Chat/Action'
+import { fetchChatByProject, fetchChatMessages, sendMessage } from '@/Redux/Chat/Action'
 import { ChatState } from '@/Redux/Chat/Reducer'
 import { useAppDispatch, useAppSelector } from '@/Redux/Hook'
 import { PaperPlaneIcon } from '@radix-ui/react-icons'
@@ -21,17 +21,22 @@ const ChatBox = () => {
   }
 
   const handleSendMessage = () => {
-    let senderID = auth.user?.id;
-    if (senderID === null || senderID === undefined || projectId === undefined) return;
-    dispatch(sendMessage({ senderID, projectID: parseInt(projectId), content: message }));
-    setMessage('')
+    const senderID = auth.user?.id;
+    const projectID = projectId ? parseInt(projectId) : null;
+    if (!senderID || !projectID) return;
+    dispatch(sendMessage({ senderID, projectID, content: message }));
+    setMessage('');
   }
   useEffect(() => {
-    if (projectId === undefined) return;
-    dispatch(fetchChatByProject(parseInt(projectId)));
-    if (chat.chat === null || chat.chat === undefined) return;
-    dispatch(fetchChatMessages(chat.chat?.id));
-  }, [projectId]);
+    if (!projectId) return;
+    const projectID = parseInt(projectId);
+    dispatch(fetchChatByProject(projectID));
+  }, [projectId, dispatch]);
+
+  useEffect(() => {
+    if (!chat.chat?.id) return;
+    dispatch(fetchChatMessages(chat.chat.id));
+  }, [chat.chat?.id, dispatch]);
 
   return (
     <div className='sticky '>
