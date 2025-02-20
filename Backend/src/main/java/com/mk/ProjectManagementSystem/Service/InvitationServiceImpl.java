@@ -3,18 +3,21 @@ package com.mk.ProjectManagementSystem.Service;
 import com.mk.ProjectManagementSystem.model.Invitation;
 import com.mk.ProjectManagementSystem.model.Project;
 import com.mk.ProjectManagementSystem.repository.InvitationRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
 @Service
+@Slf4j
 public class InvitationServiceImpl implements InvitationService {
     @Value("${FRONTEND_URL}")
     private String FRONTEND_URL;
     private final InvitationRepository invitationRepository;
     private final EmailService emailService;
     private final ProjectService projectService;
+
 
     public InvitationServiceImpl(InvitationRepository invitationRepository, EmailService emailService, ProjectService projectService) {
         this.invitationRepository = invitationRepository;
@@ -38,7 +41,8 @@ public class InvitationServiceImpl implements InvitationService {
             String invitationLink = FRONTEND_URL+"/accept_invitation?token=" + invitationToken;
             return emailService.sendEmailWithToken(email, invitationLink);
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            log.error("Send Invitation error",e);
+            return false;
         }
     }
 

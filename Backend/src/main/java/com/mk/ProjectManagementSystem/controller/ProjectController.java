@@ -4,6 +4,7 @@ import com.mk.ProjectManagementSystem.Service.InvitationService;
 import com.mk.ProjectManagementSystem.Service.ProjectService;
 import com.mk.ProjectManagementSystem.Service.UserService;
 import com.mk.ProjectManagementSystem.model.Chat;
+import com.mk.ProjectManagementSystem.model.Invitation;
 import com.mk.ProjectManagementSystem.model.Project;
 import com.mk.ProjectManagementSystem.model.User;
 import com.mk.ProjectManagementSystem.request.InviteRequest;
@@ -142,4 +143,21 @@ public class ProjectController {
             throw new RuntimeException(e);
         }
     }
+    @GetMapping("/accept_invitation")
+    public ResponseEntity<Invitation> acceptInvitation(@RequestParam String token, @RequestHeader("Authorization") String jwt) {
+        User user = AuthUser(jwt);
+        if (user == null) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+        Invitation invitation = invitationService.acceptInvitation(token, user.getId());
+        if (invitation == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        boolean addUserToProject=projectService.addUserToProject(invitation.getProjectId(), user.getId());
+        if(!addUserToProject){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return new ResponseEntity<>(invitation, HttpStatus.OK);
+    }
+
 }

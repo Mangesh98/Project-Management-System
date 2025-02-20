@@ -35,7 +35,6 @@ public class PaymentController {
         if (user == null) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
-
         int amount = 799 * 100;
         if (planType.equals(PlanType.ANNUALLY)) {
             amount = amount * 12;
@@ -55,8 +54,7 @@ public class PaymentController {
 
             } catch (RazorpayException e) {
                 retryCount++;
-                System.out.println("Razorpay payment link creation failed: "+ e.getMessage());
-                System.out.println("Request details: planType="+ planType+", amount="+amount+" user="+user.getEmail());
+
                 e.printStackTrace();
                 if (retryCount == maxRetries) {
                     e.printStackTrace();

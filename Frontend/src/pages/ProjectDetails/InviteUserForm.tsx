@@ -8,13 +8,18 @@ import {
 	FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { useAppDispatch } from "@/Redux/Hook";
+import { inviteToProject } from "@/Redux/Project/Action";
 import { useForm } from "react-hook-form";
+import { useParams } from "react-router-dom";
 
 interface InviteUserFormData {
 	email: string;
 }
 
 const InviteUserForm = () => {
+	const dispatch = useAppDispatch();
+	const {projectId} =useParams<{projectId:string}>();
 	const form = useForm<InviteUserFormData>({
 		// resolver:
 		defaultValues: {
@@ -23,7 +28,9 @@ const InviteUserForm = () => {
 	});
 
 	function handleSubmit(data: InviteUserFormData): void {
-		console.log(data);
+		if (projectId) {
+			dispatch(inviteToProject({ projectId, email: data.email }));
+		}
 	}
 	return (
 		<Form {...form}>

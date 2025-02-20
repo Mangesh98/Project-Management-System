@@ -10,6 +10,7 @@ import { useEffect } from "react";
 import { getUser } from "./Redux/Auth/Action";
 import Subscription from "./pages/Subscription/Subscription";
 import UpgradeSuccess from "./pages/Subscription/UpgradeSuccess";
+import AcceptInvitation from "./pages/Project/AcceptInvitation";
 function App() {
 	const dispatch = useAppDispatch();
 	const { auth } = useAppSelector((store) => store);
@@ -33,6 +34,7 @@ function App() {
 
 						<Route path="/upgrade_plan" element={<Subscription />} />
 						<Route path="/upgrade_plan/success" element={<UpgradeSuccess/>} />
+						<Route path="/accept_invitation" element={<AcceptInvitation/>} />
 					</Routes>
 				</div>
 			) : (

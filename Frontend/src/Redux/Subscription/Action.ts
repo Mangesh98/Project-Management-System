@@ -2,19 +2,17 @@ import api from "@/Config/Config";
 import * as actionType from "./ActionType";
 import { Dispatch } from "redux";
 
-
-
 export const getUserSubscription= (jwt: string) => async (dispatch: Dispatch) => {
 	dispatch({ type: actionType.GET_USER_SUBSCRIPTION_REQUEST});
 	try {
-		const { data } = await api.get(`/api/subscriptions/user`, {
+		const { data } = await api.get(`/api/subscription/user`, {
 			headers: {
-				Authorization: `Bearer ${jwt}`,
+				"Authorization": `Bearer ${jwt}`,
 			},
 		}
 		);
-		console.log("getUserSubscription() : ", data);
-			dispatch({ type: actionType.GET_USER_SUBSCRIPTION_SUCCESS, payload: data });
+		console.log("getUserSubscription() : Data : ", data);
+		dispatch({ type: actionType.GET_USER_SUBSCRIPTION_SUCCESS, payload: data });
 } catch (error) {
 			dispatch({ type: actionType.GET_USER_SUBSCRIPTION_FAILURE});
 			console.log("fetchProjectById() : ", error);
@@ -24,7 +22,7 @@ export const getUserSubscription= (jwt: string) => async (dispatch: Dispatch) =>
 export const upgradeSubscription = (planType: string) => async (dispatch: Dispatch) => {
 	dispatch({ type: actionType.UPGRADE_SUBSCRIPTION_REQUEST });
 	try {
-		const { data } = await api.post(`/api/subscriptions/upgrade/`, {
+		const { data } = await api.post(`/api/subscription/upgrade/`, {
 			params: {
 				planType: planType,
 			},

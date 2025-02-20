@@ -157,7 +157,7 @@ export const inviteToProject =
 				email,
 				projectId,
 			});
-			// console.log("inviteToProject() : ", data);
+			console.log("inviteToProject() : ", data);
 			if (data) {
 				dispatch({ type: INVITE_TO_PROJECT_SUCCESS, payload: data });
 			}
@@ -167,21 +167,21 @@ export const inviteToProject =
 		}
 	};
 interface AcceptInvitationParams {
-	invitationToken: string;
+	token: string;
 	navigate: (arg: string) => void;
 }
 
 export const acceptInvitation =
-	({ invitationToken, navigate }: AcceptInvitationParams) =>
+	({ token, navigate }: AcceptInvitationParams) =>
 	async (dispatch: (arg: DispatchArg) => void) => {
 		dispatch({ type: ACCEPT_PROJECT_INVITATION_REQUEST });
 		try {
 			const { data } = await api.get(`/api/projects/accept_invitation`, {
 				params: {
-					token: invitationToken,
+					token: token,
 				},
 			});
-			// console.log("acceptInvitation() : ", data);
+			console.log("acceptInvitation() : ", data);
 			if (data) {
 				dispatch({ type: ACCEPT_PROJECT_INVITATION_SUCCESS, payload: data });
 				navigate("/project/" + data.projectId);
